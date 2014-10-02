@@ -8,8 +8,15 @@ var port = 8080;
 var ip = "127.0.0.1";
 var server = express();
 
+
+
 var newPath = path.join(__dirname, '../archives/sites/'); //TODO fix this
 server.use(express.static(newPath));
+
+
+
+
+
 
 server.get("*", function (req, res){
   console.log("get on nonexistent site.");
@@ -17,16 +24,25 @@ server.get("*", function (req, res){
 
 server.post("*", function (req, res) {
   // obtain filepath to new file: URL
+  console.log("poast");
+
   var datURL = "";
   req.on("data", function(buf){
     datURL += buf;
+
+    if (datURL.indexOf("=") !== -1) {
+      datURL = datURL.split("=",2)[1];
+      console.log("I splitteted a thing", datURL);
+    }
+
+    console.log('adding to dat', buf+'');
   });
 
   req.on("end", function() {
     var filepath = newPath + datURL;
 
     // scrape URL for HTML
-    http.get(datURL , function (e, scraped){
+    http.get(datURL , function (e, scraped){ // scrapePage(e, scraped, filepath)
       if (e) {
         console.log("error getting html");
         return;
@@ -53,6 +69,7 @@ server.post("*", function (req, res) {
           // </stolen>
         }
         res.end();
+        return null;
       });
     });
   });
