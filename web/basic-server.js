@@ -34,8 +34,6 @@ server.post("*", function (req, res) {
       datURL = datURL.split("=",2)[1];
       console.log("I splitteted a thing", datURL);
     }
-
-    console.log('adding to dat', buf+'');
   });
 
   req.on("end", function() {
@@ -69,7 +67,6 @@ server.post("*", function (req, res) {
           // </stolen>
         }
         res.end();
-        return null;
       });
     });
   });
