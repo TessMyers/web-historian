@@ -2,13 +2,34 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="styles.css" />
+  <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
+
 </head>
 <body>
   Take a snapshot:
-  <form id = "sarah" method="POST" action="http://127.0.0.1:8080/" target"public/index.html">
-    <input type="input" name="harry"></input>
+  <form id = "draft">
+    <input type="input"></input>
   </form>
+  <div class="dump"></div>
   <script>
+    $(function (){
+      $('form').on('submit', function(event){
+        event.preventDefault();
+        var inputVal =$('input').val();
+
+        $.ajax({
+          type: "POST",
+          url: "http://127.0.0.1:8080",
+          data: inputVal,
+          success: function(firstArg, secondArg){
+            console.log('success! Here are the arguments');
+            $('.dump')[0].innerHTML = firstArg;
+          }
+        });
+        $('input').val('');
+      });
+    });
 
   </script>
 </body>
